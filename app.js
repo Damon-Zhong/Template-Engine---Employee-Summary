@@ -21,9 +21,9 @@ async function main(){
     const managerData = await inquirer.prompt([
         { name:'name', type:'input', message:`Please enter manager's name`},
         { name:'id', type:'input', message:`Please enter your ID number`},
-        { name:'email', type:'input', message:`Please enter your email.`},
+        { name:'email', type:'input', message:`Please enter your email.`, validate:validateEmail },
         { name:'officeNumber', type:'input', message:`Please enter manager's office number.`},
-        { name:'count', type:'input', message:`How many people work in this team?`}
+        { name:'count', type:'input', message:`How many people work in this team?` }
     ])
     //Create manager obj
     team.push( new Manager( managerData.name, managerData.id, managerData.email, managerData.officeNumber ))
@@ -38,7 +38,7 @@ async function main(){
             const employeeInfo = await inquirer.prompt([
                 { name:"name", type:"input", message:`Please enter your name` },
                 { name:"id", type:"input", message:`Please enter your ID` },
-                { name:"email", type:"input", message:`Please provide your email` },// validate:
+                { name:"email", type:"input", message:`Please provide your email`, validate:validateEmail },
                 { name:"github", type:"input", message:`Please provide your Github username`}
             ]);
             team.push( new Engineer( employeeInfo.name, employeeInfo.id, employeeInfo.email, employeeInfo.github) );
@@ -46,7 +46,7 @@ async function main(){
             const employeeInfo = await inquirer.prompt([
                 { name:"name", type:"input", message:`Please enter your name` },
                 { name:"id", type:"input", message:`Please enter your ID` },
-                { name:"email", type:"input", message:`Please provide your email` },// validate:
+                { name:"email", type:"input", message:`Please provide your email`, validate:validateEmail },
                 { name:"school", type:"input", message:`Please provide your school name`}
             ]);
             team.push( new Intern( employeeInfo.name, employeeInfo.id, employeeInfo.email, employeeInfo.school) );
@@ -61,6 +61,24 @@ async function main(){
 }
 
 main();
+
+async function validateEmail( email ){
+    const charSet = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if( charSet.test( email ) ){
+        return true;
+    }else{
+        console.log( `Invalid email. Please enter again.` );
+    }
+}
+
+// async function validateNum( input ){
+//     if( typeof( input ) == 'number' ){
+//         return true;
+//     }else{
+//         console.log( `Please enter a number` )
+//     }
+// }
   
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
